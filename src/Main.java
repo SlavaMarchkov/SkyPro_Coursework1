@@ -39,7 +39,7 @@ public class Main {
 
         // * Проиндексировать зарплату (вызвать изменение зарплат у всех сотрудников на величину аргумента в %)
         int percent = 10;
-        changeAllEmployeesSalary(percent);
+        changeEmployeesSalary(percent);
         printAllEmployeesData();
 
         // * 2. Получить в качестве параметра номер отдела (1–5) и найти (всего 6 методов):
@@ -47,14 +47,14 @@ public class Main {
 
         //    1. Сотрудника с минимальной зарплатой.
         String employeeWithMinimumSalaryInDepartment = getEmployeeWithMinSalary(department) == null
-            ? "Зарплаты сотрудников в департаменте " + department + " равны"
-            : "Сотрудник с минимальной зарплатой в департаменте " + department + ": " + getEmployeeWithMinSalary(department);
+                ? "Зарплаты сотрудников в департаменте " + department + " равны"
+                : "Сотрудник с минимальной зарплатой в департаменте " + department + ": " + getEmployeeWithMinSalary(department);
         System.out.println(employeeWithMinimumSalaryInDepartment);
 
         //    2. Сотрудника с максимальной зарплатой.
         String employeeWithMaximumSalaryInDepartment = getEmployeeWithMaxSalary(department) == null
-            ? "Зарплаты сотрудников в департаменте " + department + " равны"
-            : "Сотрудник с максимальной зарплатой в департаменте " + department + ": " + getEmployeeWithMaxSalary(department);
+                ? "Зарплаты сотрудников в департаменте " + department + " равны"
+                : "Сотрудник с максимальной зарплатой в департаменте " + department + ": " + getEmployeeWithMaxSalary(department);
         System.out.println(employeeWithMaximumSalaryInDepartment);
 
         //    3. Сумму затрат на зарплату по отделу.
@@ -66,6 +66,9 @@ public class Main {
         System.out.println("Среднее значение зарплат департамента " + department + " в месяц: " + averageMonthlySalaryInDepartment + " руб.");
 
         //    5. Проиндексировать зарплату всех сотрудников отдела на процент, который приходит в качестве параметра.
+        changeEmployeesSalary(percent, department);
+        printAllEmployeesData();
+
         //    6. Напечатать всех сотрудников отдела (все данные, кроме отдела).
         printDepartmentEmployeesData(department);
     }
@@ -95,8 +98,16 @@ public class Main {
         }
     }
 
-    private static void changeAllEmployeesSalary(int percent) {
+    private static void changeEmployeesSalary(int percent) {
         for (Employee employee : employees) {
+            int salary = employee.getSalary() + employee.getSalary() * percent / 100;
+            employee.setSalary(salary);
+        }
+    }
+
+    private static void changeEmployeesSalary(int percent, int department) {
+        Employee[] departmentEmployees = getEmployeesByDepartment(department);
+        for (Employee employee : departmentEmployees) {
             int salary = employee.getSalary() + employee.getSalary() * percent / 100;
             employee.setSalary(salary);
         }
@@ -158,6 +169,7 @@ public class Main {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
         return calcTotalMonthlySalary(department) / departmentEmployees.length;
     }
+
     private static int calcAverageMonthlySalary() {
         return calcTotalMonthlySalary() / employees.length;
     }
@@ -169,6 +181,7 @@ public class Main {
         }
         return total;
     }
+
     private static int calcTotalMonthlySalary(int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
         int total = 0;
