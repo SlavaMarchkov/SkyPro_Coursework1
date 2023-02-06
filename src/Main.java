@@ -35,7 +35,7 @@ public class Main {
         System.out.println("Среднее значение зарплат в месяц: " + averageMonthlySalary + " руб.");
 
         // Получить Ф. И. О. всех сотрудников (вывести в консоль)
-//        printEmployeesFullNames();
+        printEmployeesFullNames();
 
         // * Проиндексировать зарплату (вызвать изменение зарплат у всех сотрудников на величину аргумента в %)
         int percent = 10;
@@ -62,6 +62,9 @@ public class Main {
         System.out.println("Сумма затрат на зарплаты департамента " + department + " в месяц: " + totalMonthlySalaryInDepartment + " руб.");
 
         //    4. Среднюю зарплату по отделу (учесть, что количество людей в отделе отличается от employees.length).
+        int averageMonthlySalaryInDepartment = calcAverageMonthlySalary(department);
+        System.out.println("Среднее значение зарплат департамента " + department + " в месяц: " + averageMonthlySalaryInDepartment + " руб.");
+
         //    5. Проиндексировать зарплату всех сотрудников отдела на процент, который приходит в качестве параметра.
         //    6. Напечатать всех сотрудников отдела (все данные, кроме отдела).
         printDepartmentEmployeesData(department);
@@ -151,6 +154,10 @@ public class Main {
         return fullName;
     }
 
+    private static int calcAverageMonthlySalary(int department) {
+        Employee[] departmentEmployees = getEmployeesByDepartment(department);
+        return calcTotalMonthlySalary(department) / departmentEmployees.length;
+    }
     private static int calcAverageMonthlySalary() {
         return calcTotalMonthlySalary() / employees.length;
     }
