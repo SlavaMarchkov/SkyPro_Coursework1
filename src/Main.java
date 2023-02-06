@@ -91,10 +91,9 @@ public class Main {
     }
 
     private static void printDepartmentEmployeesData(int department) {
-        for (Employee employee : employees) {
-            if (employee.getDepartment() == department) {
-                System.out.println(employee.getEmployeeData());
-            }
+        Employee[] departmentEmployees = getEmployeesByDepartment(department);
+        for (Employee employee : departmentEmployees) {
+            System.out.println(employee.getEmployeeData());
         }
     }
 
