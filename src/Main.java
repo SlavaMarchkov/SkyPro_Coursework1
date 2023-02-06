@@ -58,6 +58,9 @@ public class Main {
         System.out.println(employeeWithMaximumSalaryInDepartment);
 
         //    3. Сумму затрат на зарплату по отделу.
+        int totalMonthlySalaryInDepartment = calcTotalMonthlySalary(department);
+        System.out.println("Сумма затрат на зарплаты департамента " + department + " в месяц: " + totalMonthlySalaryInDepartment + " руб.");
+
         //    4. Среднюю зарплату по отделу (учесть, что количество людей в отделе отличается от employees.length).
         //    5. Проиндексировать зарплату всех сотрудников отдела на процент, который приходит в качестве параметра.
         //    6. Напечатать всех сотрудников отдела (все данные, кроме отдела).
@@ -155,6 +158,14 @@ public class Main {
     private static int calcTotalMonthlySalary() {
         int total = 0;
         for (Employee employee : employees) {
+            total += employee.getSalary();
+        }
+        return total;
+    }
+    private static int calcTotalMonthlySalary(int department) {
+        Employee[] departmentEmployees = getEmployeesByDepartment(department);
+        int total = 0;
+        for (Employee employee : departmentEmployees) {
             total += employee.getSalary();
         }
         return total;
