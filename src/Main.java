@@ -37,12 +37,17 @@ public class Main {
         // Получить Ф. И. О. всех сотрудников (вывести в консоль)
         printEmployeesFullNames();
 
-        // * Проиндексировать зарплату (вызвать изменение зарплат у всех сотрудников на величину аргумента в %)
+        // * 1. Проиндексировать зарплату (вызвать изменение зарплат у всех сотрудников на величину аргумента в %)
+        System.out.println("================= Task 1 ======================");
+
         int percent = 10;
+
         changeEmployeesSalary(percent);
         printAllEmployeesData();
 
         // * 2. Получить в качестве параметра номер отдела (1–5) и найти (всего 6 методов):
+        System.out.println("================= Task 2 ======================");
+
         int department = 5;
 
         //    1. Сотрудника с минимальной зарплатой.
@@ -71,6 +76,35 @@ public class Main {
 
         //    6. Напечатать всех сотрудников отдела (все данные, кроме отдела).
         printDepartmentEmployeesData(department);
+
+        // * 3. Получить в качестве параметра число и найти:
+        //    1. Всех сотрудников с зарплатой меньше числа (вывести id, Ф. И. О. и зарплатой в консоль).
+        //    2. Всех сотрудников с зарплатой больше (или равно) числа (вывести id, Ф. И. О. и зарплатой в консоль).
+        System.out.println("================= Task 3 ======================");
+
+        int benchmark = 33000;
+
+        System.out.println("Сотрудники с зарплатой меньше чем " + benchmark + " рублей:");
+        printEmployeesWithSalaryLowerThanBenchmark(benchmark);
+
+        System.out.println("Сотрудники с зарплатой больше или равной " + benchmark + " рублей:");
+        printEmployeesWithSalaryHigherThanBenchmark(benchmark);
+    }
+
+    private static void printEmployeesWithSalaryHigherThanBenchmark(int benchmark) {
+        for (Employee employee : employees) {
+            if (employee.getSalary() >= benchmark) {
+                System.out.println(employee.getEmployeeData());
+            }
+        }
+    }
+
+    private static void printEmployeesWithSalaryLowerThanBenchmark(int benchmark) {
+        for (Employee employee : employees) {
+            if (employee.getSalary() < benchmark) {
+                System.out.println(employee.getEmployeeData());
+            }
+        }
     }
 
     private static Employee[] getEmployeesByDepartment(int department) {
