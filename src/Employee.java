@@ -68,4 +68,8 @@ public class Employee {
     public String getFullName() {
         return getLastName() + " " + getFirstName() + " " + getMiddleName();
     }
+
+    public String getEmployeeData() {
+        return "ID: " + getId() + " | ФИО: " + getFullName() + " | зарплата: " + getSalary();
+    }
 }
