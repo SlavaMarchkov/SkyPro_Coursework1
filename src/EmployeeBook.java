@@ -1,9 +1,63 @@
 public class EmployeeBook {
 
     private final Employee[] employees;
+    private int size;
 
     public EmployeeBook() {
         this.employees = new Employee[10];
+    }
+
+    /**
+     * Добавляет нового сотрудника типа Employee в массив employees с проверкой на допустимое количество
+     *
+     * @param firstName  String
+     * @param middleName String
+     * @param lastName   String
+     * @param salary     int
+     * @param department int
+     */
+    public void addEmployee(String firstName, String middleName, String lastName, int salary, int department) {
+        // проверка на допустимое количество
+        if (getSize() >= employees.length) {
+            System.out.println("Контора укомплектована сотрудниками до отказа!");
+            return;
+        }
+        // создаем объект, заполняем поля через конструктор класса Employee
+        Employee newEmployee = new Employee(firstName, middleName, lastName, salary, department);
+        // кладем в массив в счетчик size, увеличиваем счетчик на единицу
+        employees[size++] = newEmployee;
+//        System.out.println(Arrays.toString(employees));
+    }
+
+    public void removeEmployeeById(int id) {
+        for (int i = 0; i < size; i++) {
+            Employee employee = employees[i];
+            if (employee.getId() == id) {
+                employees[i] = null;
+                System.out.println("Сотрудник с ID " + id + " удалён!");
+                return;
+            }
+        }
+    }
+
+    public Employee findEmployeeByName(String fullName) {
+        for (int i = 0; i < size; i++) {
+            Employee employee = employees[i];
+            if (employee.getFullName().equals(fullName)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+
+    public void setSalaryByName(String fullName, int newSalary) {
+        Employee foundEmployee = findEmployeeByName(fullName);
+        foundEmployee.setSalary(newSalary);
+    }
+
+    public void setDepartmentByName(String fullName, int newDepartment) {
+        Employee foundEmployee = findEmployeeByName(fullName);
+        foundEmployee.setDepartment(newDepartment);
     }
 
     public void printEmployeesWithSalaryHigherThanBenchmark(int benchmark) {
@@ -122,6 +176,11 @@ public class EmployeeBook {
         return calcTotalMonthlySalary() / employees.length;
     }
 
+    /**
+     * Считает общую зарплату за месяц
+     *
+     * @return int
+     */
     public int calcTotalMonthlySalary() {
         int total = 0;
         for (Employee employee : employees) {
@@ -130,6 +189,12 @@ public class EmployeeBook {
         return total;
     }
 
+    /**
+     * Считает общую зарплату за месяц по отделу
+     *
+     * @param department int - номер отдела
+     * @return int
+     */
     public int calcTotalMonthlySalary(int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
         int total = 0;
@@ -146,6 +211,10 @@ public class EmployeeBook {
         for (Employee employee : employees) {
             System.out.println(employee);
         }
+    }
+
+    private int getSize() {
+        return size;
     }
 
 }
