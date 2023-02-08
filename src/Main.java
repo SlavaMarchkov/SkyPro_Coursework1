@@ -18,6 +18,11 @@ public class Main {
 
         // Удалить сотрудника по ID
         employeeBook.removeEmployeeById(2);
+        employeeBook.removeEmployeeById(9);
+
+        // Удалить сотрудника по ФИО
+        employeeBook.removeEmployeeByName("Пронькиндт Алексей Иванович");
+        employeeBook.removeEmployeeByName("Звонов Дмитрий Федорович");
 
         // Найти сотрудника по имени
 //        Employee foundEmployee = employeeBook.findEmployeeByName("Пронькин Алексей Иванович");

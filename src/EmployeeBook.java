@@ -32,14 +32,17 @@ public class EmployeeBook {
     }
 
     /**
-     * Удаляет сотрудник по ID (обнуляет ячейку в массиве сотрудников)
+     * Удаляет сотрудника по ID (обнуляет ячейку в массиве сотрудников)
      *
      * @param id int
      */
     public void removeEmployeeById(int id) {
-        for (int i = 0; i < size; i++) {
+        if (id > employees.length - 1) {
+            System.out.println("ID " + id + " некорректный");
+        }
+        for (int i = 0; i < employees.length; i++) {
             Employee employee = employees[i];
-            if (employee.getId() == id) {
+            if (employee != null && employee.getId() == id) {
                 employees[i] = null;
                 System.out.println("Сотрудник с ID " + id + " удалён!");
                 return;
@@ -47,10 +50,26 @@ public class EmployeeBook {
         }
     }
 
+    /**
+     * Удаляет сотрудника по ФИО (обнуляет ячейку в массиве сотрудников)
+     *
+     * @param fullName String
+     */
+    public void removeEmployeeByName(String fullName) {
+        Employee foundEmployee = findEmployeeByName(fullName);
+        if (foundEmployee == null) {
+            System.out.println("Сотрудник " + fullName + " не найден!");
+        } else {
+            int id = foundEmployee.getId();
+            employees[id] = null;
+            System.out.println("Сотрудник " + fullName + " удалён!");
+        }
+    }
+
     public Employee findEmployeeByName(String fullName) {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < employees.length; i++) {
             Employee employee = employees[i];
-            if (employee.getFullName().equals(fullName)) {
+            if (employee != null && employee.getFullName().equals(fullName)) {
                 return employee;
             }
         }
