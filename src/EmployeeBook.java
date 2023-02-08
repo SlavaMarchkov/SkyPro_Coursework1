@@ -23,11 +23,15 @@ public class EmployeeBook {
             System.out.println("Контора укомплектована сотрудниками до отказа!");
             return;
         }
-        if (employees[size] == null) {
-            // создаем объект, заполняем поля через конструктор класса Employee
-            Employee newEmployee = new Employee(firstName, middleName, lastName, salary, department);
-            // кладем в массив в счетчик size, увеличиваем счетчик на единицу
-            employees[size++] = newEmployee;
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] == null) {
+                // создаем объект, заполняем поля через конструктор класса Employee
+                Employee newEmployee = new Employee(firstName, middleName, lastName, salary, department);
+                // кладем в массив в счетчик size, увеличиваем счетчик на единицу
+                employees[i] = newEmployee;
+                size++;
+                break;
+            }
         }
     }
 
@@ -37,13 +41,11 @@ public class EmployeeBook {
      * @param id int
      */
     public void removeEmployeeById(int id) {
-        if (id > employees.length - 1) {
-            System.out.println("ID " + id + " некорректный");
-        }
         for (int i = 0; i < employees.length; i++) {
             Employee employee = employees[i];
             if (employee != null && employee.getId() == id) {
                 employees[i] = null;
+                size--;
                 System.out.println("Сотрудник с ID " + id + " удалён!");
                 return;
             }
@@ -62,10 +64,17 @@ public class EmployeeBook {
         } else {
             int id = foundEmployee.getId();
             employees[id] = null;
+            size--;
             System.out.println("Сотрудник " + fullName + " удалён!");
         }
     }
 
+    /**
+     * Ищет сотрудника по ФИО
+     *
+     * @param fullName String
+     * @return Employee|null - если сотрудник не найден, возвращает null
+     */
     public Employee findEmployeeByName(String fullName) {
         for (int i = 0; i < employees.length; i++) {
             Employee employee = employees[i];

@@ -4,6 +4,7 @@ public class Main {
     public static void main(String[] args) {
         EmployeeBook employeeBook = new EmployeeBook();
 
+        // Добавить сотрудника
         employeeBook.addEmployee("Алексей", "Иванович", "Кузькин", 40000, 1);
         employeeBook.addEmployee("Алексей", "Иванович", "Пронькин", 30000, 3);
         employeeBook.addEmployee("Кузьма", "Андреевич", "Медведев", 30000, 1);
@@ -23,6 +24,12 @@ public class Main {
         // Удалить сотрудника по ФИО
         employeeBook.removeEmployeeByName("Пронькиндт Алексей Иванович");
         employeeBook.removeEmployeeByName("Звонов Дмитрий Федорович");
+
+        // Добавить удаленного сотрудника
+        employeeBook.addEmployee("Дмитрий", "Федорович", "Звонов", 30000, 2);
+        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 1);
+        employeeBook.addEmployee("Татьяна", "Сергеевна", "Головкова", 100000, 1);
+
 
         // Найти сотрудника по имени
 //        Employee foundEmployee = employeeBook.findEmployeeByName("Пронькин Алексей Иванович");
