@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class EmployeeBook {
 
     private final Employee[] employees;
@@ -60,12 +58,12 @@ public class EmployeeBook {
     public void removeEmployeeByName(String fullName) {
         Employee foundEmployee = findEmployeeByName(fullName);
         if (foundEmployee == null) {
-            System.out.println("Сотрудник " + fullName + " не найден!");
+            System.out.println("Сотрудник \"" + fullName + "\" не найден!");
         } else {
             int id = foundEmployee.getId();
             employees[id] = null;
             size--;
-            System.out.println("Сотрудник " + fullName + " удалён!");
+            System.out.println("Сотрудник \"" + fullName + "\" удалён!");
         }
     }
 
@@ -75,9 +73,8 @@ public class EmployeeBook {
      * @param fullName String
      * @return Employee|null - если сотрудник не найден, возвращает null
      */
-    public Employee findEmployeeByName(String fullName) {
-        for (int i = 0; i < employees.length; i++) {
-            Employee employee = employees[i];
+    private Employee findEmployeeByName(String fullName) {
+        for (Employee employee : employees) {
             if (employee != null && employee.getFullName().equals(fullName)) {
                 return employee;
             }
@@ -87,12 +84,22 @@ public class EmployeeBook {
 
     public void setSalaryByName(String fullName, int newSalary) {
         Employee foundEmployee = findEmployeeByName(fullName);
-        foundEmployee.setSalary(newSalary);
+        if (foundEmployee != null) {
+            foundEmployee.setSalary(newSalary);
+            System.out.println("Зарплата сотрудника \"" + fullName + "\" изменена. Новая зарплата: " + newSalary + " руб.");
+        } else {
+            System.out.println("Сотрудник \"" + fullName + "\" не найден!");
+        }
     }
 
     public void setDepartmentByName(String fullName, int newDepartment) {
         Employee foundEmployee = findEmployeeByName(fullName);
-        foundEmployee.setDepartment(newDepartment);
+        if (foundEmployee != null) {
+            foundEmployee.setDepartment(newDepartment);
+            System.out.println("Отдел сотрудника \"" + fullName + "\" изменён. Новый отдел: " + newDepartment);
+        } else {
+            System.out.println("Сотрудник \"" + fullName + "\" не найден!");
+        }
     }
 
     /**
@@ -102,7 +109,7 @@ public class EmployeeBook {
      */
     public void printEmployeesWithSalaryHigherThanBenchmark(int benchmark) {
         for (Employee employee : employees) {
-            if (employee.getSalary() >= benchmark) {
+            if (employee != null && employee.getSalary() >= benchmark) {
                 System.out.println(employee.getEmployeeData());
             }
         }
@@ -115,7 +122,7 @@ public class EmployeeBook {
      */
     public void printEmployeesWithSalaryLowerThanBenchmark(int benchmark) {
         for (Employee employee : employees) {
-            if (employee.getSalary() < benchmark) {
+            if (employee != null && employee.getSalary() < benchmark) {
                 System.out.println(employee.getEmployeeData());
             }
         }
@@ -131,7 +138,7 @@ public class EmployeeBook {
         Employee[] temp = new Employee[employees.length];
         int count = 0;
         for (Employee employee : employees) {
-            if (employee.getDepartment() == department) {
+            if (employee != null && employee.getDepartment() == department) {
                 temp[count++] = employee;
             }
         }
@@ -170,8 +177,10 @@ public class EmployeeBook {
      */
     public void changeEmployeesSalary(int percent) {
         for (Employee employee : employees) {
-            int salary = employee.getSalary() + employee.getSalary() * percent / 100;
-            employee.setSalary(salary);
+            if (employee != null) {
+                int salary = employee.getSalary() + employee.getSalary() * percent / 100;
+                employee.setSalary(salary);
+            }
         }
     }
 
@@ -191,7 +200,9 @@ public class EmployeeBook {
 
     public void printEmployeesFullNames() {
         for (Employee employee : employees) {
-            System.out.println(employee.getFullName());
+            if (employee != null) {
+                System.out.println(employee.getFullName());
+            }
         }
     }
 
@@ -217,7 +228,8 @@ public class EmployeeBook {
         String fullName = null;
         for (int i = 1; i < array.length; i++) {
             Employee employee = array[i];
-            if (employee.getSalary() > maxSalary) {
+            if (employee != null && employee.getSalary() > maxSalary) {
+                maxSalary = employee.getSalary();
                 fullName = employee.getFullName();
             }
         }
@@ -246,20 +258,21 @@ public class EmployeeBook {
         String fullName = null;
         for (int i = 1; i < array.length; i++) {
             Employee employee = array[i];
-            if (employee.getSalary() < minSalary) {
+            if (employee != null && employee.getSalary() < minSalary) {
+                minSalary = employee.getSalary();
                 fullName = employee.getFullName();
             }
         }
         return fullName;
     }
 
-    public int calcAverageMonthlySalary(int department) {
+    public float calcAverageMonthlySalary(int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
-        return calcTotalMonthlySalary(department) / departmentEmployees.length;
+        return (float) calcTotalMonthlySalary(department) / departmentEmployees.length;
     }
 
-    public int calcAverageMonthlySalary() {
-        return calcTotalMonthlySalary() / employees.length;
+    public float calcAverageMonthlySalary() {
+        return (float) calcTotalMonthlySalary() / getSize();
     }
 
     /**
@@ -270,7 +283,9 @@ public class EmployeeBook {
     public int calcTotalMonthlySalary() {
         int total = 0;
         for (Employee employee : employees) {
-            total += employee.getSalary();
+            if (employee != null) {
+                total += employee.getSalary();
+            }
         }
         return total;
     }
@@ -285,7 +300,10 @@ public class EmployeeBook {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
         int total = 0;
         for (Employee employee : departmentEmployees) {
-            total += employee.getSalary();
+            if (employee != null) {
+                System.out.println(employee.getFullName() + " | " + employee.getSalary());
+                total += employee.getSalary();
+            }
         }
         return total;
     }

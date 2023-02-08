@@ -1,10 +1,12 @@
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
+
+        // ** Задания уровня "Очень сложно"
+        System.out.println("================= Уровень \"Очень сложно\" ======================");
+
         EmployeeBook employeeBook = new EmployeeBook();
 
-        // Добавить сотрудника
+        // ** Добавить сотрудника
         employeeBook.addEmployee("Алексей", "Иванович", "Кузькин", 40000, 1);
         employeeBook.addEmployee("Алексей", "Иванович", "Пронькин", 30000, 3);
         employeeBook.addEmployee("Кузьма", "Андреевич", "Медведев", 30000, 1);
@@ -14,34 +16,25 @@ public class Main {
         employeeBook.addEmployee("Дмитрий", "Федорович", "Звонов", 30000, 2);
         employeeBook.addEmployee("Елисей", "Дмитриевич", "Волков", 70000, 5);
         employeeBook.addEmployee("Роман", "Карлович", "Мудрый", 30000, 3);
-        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 1);
+        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 5);
         employeeBook.addEmployee("Лишний", "", "Сотрудник", 1_000_000, 10);
 
-        // Удалить сотрудника по ID
+        // ** Удалить сотрудника по ID
         employeeBook.removeEmployeeById(2);
         employeeBook.removeEmployeeById(9);
 
-        // Удалить сотрудника по ФИО
+        // ** Удалить сотрудника по ФИО
         employeeBook.removeEmployeeByName("Пронькиндт Алексей Иванович");
         employeeBook.removeEmployeeByName("Звонов Дмитрий Федорович");
 
-        // Добавить удаленного сотрудника
+        // ** Обратно добавить удаленного сотрудника
         employeeBook.addEmployee("Дмитрий", "Федорович", "Звонов", 30000, 2);
-        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 1);
-        employeeBook.addEmployee("Татьяна", "Сергеевна", "Головкова", 100000, 1);
 
+        // ** Изменить зарплату сотрудника по ФИО
+        employeeBook.setSalaryByName("Звонов Дмитрий Федорович", 60000);
 
-        // Найти сотрудника по имени
-//        Employee foundEmployee = employeeBook.findEmployeeByName("Пронькин Алексей Иванович");
-//        System.out.println("found: " + foundEmployee);
-
-        // Изменить зарплату сотрудника по ФИО
-//        employeeBook.setSalaryByName("Пронькин Алексей Иванович", 60000);
-//        System.out.println("setSalary: " + foundEmployee);
-
-        // Изменить отдел, где работает сотрудник по его ФИО
-//        employeeBook.setDepartmentByName("Дмитриева Елена Вячеславовна", 1);
-//        System.out.println("setDepartment: " + employeeBook.findEmployeeByName("Дмитриева Елена Вячеславовна"));
+        // ** Изменить отдел, где работает сотрудник по его ФИО
+        employeeBook.setDepartmentByName("Дмитриева Елена Вячеславовна", 1);
 
         // Получить список всех сотрудников со всеми имеющимися по ним данными
         // (вывести в консоль значения всех полей (toString))
@@ -60,7 +53,7 @@ public class Main {
         System.out.println("Сотрудник с максимальной зарплатой: " + employeeWithMaximumSalary);
 
         // Подсчитать среднее значение зарплат
-        int averageMonthlySalary = employeeBook.calcAverageMonthlySalary();
+        float averageMonthlySalary = employeeBook.calcAverageMonthlySalary();
         System.out.println("Среднее значение зарплат в месяц: " + averageMonthlySalary + " руб.");
 
         // Получить Ф. И. О. всех сотрудников (вывести в консоль)
@@ -96,7 +89,7 @@ public class Main {
         System.out.println("Сумма затрат на зарплаты департамента " + department + " в месяц: " + totalMonthlySalaryInDepartment + " руб.");
 
         //    4. Среднюю зарплату по отделу (учесть, что количество людей в отделе отличается от employees.length).
-        int averageMonthlySalaryInDepartment = employeeBook.calcAverageMonthlySalary(department);
+        float averageMonthlySalaryInDepartment = employeeBook.calcAverageMonthlySalary(department);
         System.out.println("Среднее значение зарплат департамента " + department + " в месяц: " + averageMonthlySalaryInDepartment + " руб.");
 
         //    5. Проиндексировать зарплату всех сотрудников отдела на процент, который приходит в качестве параметра.
