@@ -326,4 +326,20 @@ public class EmployeeBook {
         return size;
     }
 
+    /**
+     * Выводит на экран список сотрудников по каждому отделу
+     */
+    public void printAllEmployeesDataGroupedByDepartment() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Отдел " + i);
+            Employee[] departmentEmployees = getEmployeesByDepartment(i);
+            if (departmentEmployees.length > 0) {
+                for (Employee employee : departmentEmployees) {
+                    System.out.println(employee.getFullName());
+                }
+            } else {
+                System.out.println("В отделе нет сотрудников");
+            }
+        }
+    }
 }
