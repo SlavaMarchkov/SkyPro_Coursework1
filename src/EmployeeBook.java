@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class EmployeeBook {
 
     private final Employee[] employees;
@@ -17,18 +19,23 @@ public class EmployeeBook {
      * @param department int
      */
     public void addEmployee(String firstName, String middleName, String lastName, int salary, int department) {
-        // проверка на допустимое количество
-        if (getSize() >= employees.length) {
+        if (size >= employees.length) {
             System.out.println("Контора укомплектована сотрудниками до отказа!");
             return;
         }
-        // создаем объект, заполняем поля через конструктор класса Employee
-        Employee newEmployee = new Employee(firstName, middleName, lastName, salary, department);
-        // кладем в массив в счетчик size, увеличиваем счетчик на единицу
-        employees[size++] = newEmployee;
-//        System.out.println(Arrays.toString(employees));
+        if (employees[size] == null) {
+            // создаем объект, заполняем поля через конструктор класса Employee
+            Employee newEmployee = new Employee(firstName, middleName, lastName, salary, department);
+            // кладем в массив в счетчик size, увеличиваем счетчик на единицу
+            employees[size++] = newEmployee;
+        }
     }
 
+    /**
+     * Удаляет сотрудник по ID (обнуляет ячейку в массиве сотрудников)
+     *
+     * @param id int
+     */
     public void removeEmployeeById(int id) {
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
@@ -60,6 +67,11 @@ public class EmployeeBook {
         foundEmployee.setDepartment(newDepartment);
     }
 
+    /**
+     * Выводит в консоль список сотрудников с зарплатой больше заданного числа или равной
+     *
+     * @param benchmark int
+     */
     public void printEmployeesWithSalaryHigherThanBenchmark(int benchmark) {
         for (Employee employee : employees) {
             if (employee.getSalary() >= benchmark) {
@@ -68,6 +80,11 @@ public class EmployeeBook {
         }
     }
 
+    /**
+     * Выводит в консоль список сотрудников с зарплатой меньше заданного числа
+     *
+     * @param benchmark int
+     */
     public void printEmployeesWithSalaryLowerThanBenchmark(int benchmark) {
         for (Employee employee : employees) {
             if (employee.getSalary() < benchmark) {
@@ -76,6 +93,12 @@ public class EmployeeBook {
         }
     }
 
+    /**
+     * Получает массив сотрудников одного отдела длиной исходного массива
+     *
+     * @param department int
+     * @return Employee[]
+     */
     private Employee[] getEmployeesByDepartment(int department) {
         Employee[] temp = new Employee[employees.length];
         int count = 0;
@@ -87,12 +110,24 @@ public class EmployeeBook {
         return trim(temp, count);
     }
 
+    /**
+     * Обрезает массив
+     *
+     * @param array Employee[]
+     * @param count int
+     * @return Employee[]
+     */
     private Employee[] trim(Employee[] array, int count) {
         Employee[] result = new Employee[count];
         System.arraycopy(array, 0, result, 0, result.length);
         return result;
     }
 
+    /**
+     * Выводит на экран данные сотрудников одного отдела
+     *
+     * @param department int
+     */
     public void printDepartmentEmployeesData(int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
         for (Employee employee : departmentEmployees) {
@@ -100,6 +135,11 @@ public class EmployeeBook {
         }
     }
 
+    /**
+     * Индексирует зарплату всех сотрудников
+     *
+     * @param percent int
+     */
     public void changeEmployeesSalary(int percent) {
         for (Employee employee : employees) {
             int salary = employee.getSalary() + employee.getSalary() * percent / 100;
@@ -107,6 +147,12 @@ public class EmployeeBook {
         }
     }
 
+    /**
+     * Индексирует зарплату сотрудников по отделу
+     *
+     * @param percent    int
+     * @param department int
+     */
     public void changeEmployeesSalary(int percent, int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
         for (Employee employee : departmentEmployees) {
@@ -132,6 +178,12 @@ public class EmployeeBook {
         return getEmployeeNameWithMaxSalary(employees);
     }
 
+    /**
+     * Получает ФИО сотрудника с максимальной зарплатой
+     *
+     * @param array Employee
+     * @return String
+     */
     private String getEmployeeNameWithMaxSalary(Employee[] array) {
         int maxSalary = array[0].getSalary();
         String fullName = null;
@@ -155,6 +207,12 @@ public class EmployeeBook {
         return getEmployeeNameWithMinSalary(employees);
     }
 
+    /**
+     * Получает ФИО сотрудника с минимальной зарплатой
+     *
+     * @param array Employee
+     * @return String
+     */
     private String getEmployeeNameWithMinSalary(Employee[] array) {
         int minSalary = array[0].getSalary();
         String fullName = null;
@@ -213,6 +271,11 @@ public class EmployeeBook {
         }
     }
 
+    /**
+     * Получает количество заполненных элементов массива сотрудников
+     *
+     * @return int
+     */
     private int getSize() {
         return size;
     }

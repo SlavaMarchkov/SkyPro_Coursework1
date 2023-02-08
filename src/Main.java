@@ -9,31 +9,31 @@ public class Main {
         employeeBook.addEmployee("Кузьма", "Андреевич", "Медведев", 30000, 1);
         employeeBook.addEmployee("София", "Агаповна", "Собакевич", 60000, 3);
         employeeBook.addEmployee("Елена", "Вячеславовна", "Дмитриева", 20000, 5);
-//        employeeBook.addEmployee("Александр", "Дмитриевич", "Ходоренко", 10000, 5);
-//        employeeBook.addEmployee("Дмитрий", "Федорович", "Звонов", 30000, 2);
-//        employeeBook.addEmployee("Елисей", "Дмитриевич", "Волков", 70000, 5);
-//        employeeBook.addEmployee("Роман", "Карлович", "Мудрый", 30000, 3);
-//        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 1);
-//        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 1);
+        employeeBook.addEmployee("Александр", "Дмитриевич", "Ходоренко", 10000, 5);
+        employeeBook.addEmployee("Дмитрий", "Федорович", "Звонов", 30000, 2);
+        employeeBook.addEmployee("Елисей", "Дмитриевич", "Волков", 70000, 5);
+        employeeBook.addEmployee("Роман", "Карлович", "Мудрый", 30000, 3);
+        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 1);
+        employeeBook.addEmployee("Лишний", "", "Сотрудник", 1_000_000, 10);
 
         // Удалить сотрудника по ID
-//        employeeBook.removeEmployeeById(2);
+        employeeBook.removeEmployeeById(2);
 
         // Найти сотрудника по имени
-        Employee foundEmployee = employeeBook.findEmployeeByName("Пронькин Алексей Иванович");
-        System.out.println("found: " + foundEmployee);
+//        Employee foundEmployee = employeeBook.findEmployeeByName("Пронькин Алексей Иванович");
+//        System.out.println("found: " + foundEmployee);
 
         // Изменить зарплату сотрудника по ФИО
-        employeeBook.setSalaryByName("Пронькин Алексей Иванович", 60000);
-        System.out.println("setSalary: " + foundEmployee);
+//        employeeBook.setSalaryByName("Пронькин Алексей Иванович", 60000);
+//        System.out.println("setSalary: " + foundEmployee);
 
         // Изменить отдел, где работает сотрудник по его ФИО
-        employeeBook.setDepartmentByName("Дмитриева Елена Вячеславовна", 1);
-        System.out.println("setDepartment: " + employeeBook.findEmployeeByName("Дмитриева Елена Вячеславовна"));
+//        employeeBook.setDepartmentByName("Дмитриева Елена Вячеславовна", 1);
+//        System.out.println("setDepartment: " + employeeBook.findEmployeeByName("Дмитриева Елена Вячеславовна"));
 
         // Получить список всех сотрудников со всеми имеющимися по ним данными
         // (вывести в консоль значения всех полей (toString))
-//        employeeBook.printAllEmployeesData();
+        employeeBook.printAllEmployeesData();
 
         // Посчитать сумму затрат на зарплаты в месяц
         int totalMonthlySalary = employeeBook.calcTotalMonthlySalary();
