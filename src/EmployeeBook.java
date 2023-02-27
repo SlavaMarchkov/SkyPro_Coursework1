@@ -1,33 +1,20 @@
 public class EmployeeBook {
 
+    private static final int SIZE = 10;
     private final Employee[] employees;
-    private int size;
 
     public EmployeeBook() {
-        this.employees = new Employee[10];
+        this.employees = new Employee[SIZE];
     }
 
-    /**
-     * Добавляет нового сотрудника типа Employee в массив employees с проверкой на допустимое количество
-     *
-     * @param firstName  String
-     * @param middleName String
-     * @param lastName   String
-     * @param salary     int
-     * @param department int
-     */
-    public void addEmployee(String firstName, String middleName, String lastName, int salary, int department) {
-        if (size >= employees.length) {
+    public void addEmployee(Employee employee) {
+        /*if (SIZE >= employees.length) {
             System.out.println("Контора укомплектована сотрудниками до отказа!");
             return;
-        }
+        }*/
         for (int i = 0; i < employees.length; i++) {
             if (employees[i] == null) {
-                // создаем объект, заполняем поля через конструктор класса Employee
-                Employee newEmployee = new Employee(firstName, middleName, lastName, salary, department);
-                // кладем в массив в счетчик size, увеличиваем счетчик на единицу
-                employees[i] = newEmployee;
-                size++;
+                employees[i] = employee;
                 break;
             }
         }
@@ -38,12 +25,11 @@ public class EmployeeBook {
      *
      * @param id int
      */
-    public void removeEmployeeById(int id) {
+    public void removeEmployee(int id) {
         for (int i = 0; i < employees.length; i++) {
             Employee employee = employees[i];
             if (employee != null && employee.getId() == id) {
                 employees[i] = null;
-                size--;
                 System.out.println("Сотрудник с ID " + id + " удалён!");
                 return;
             }
@@ -55,14 +41,13 @@ public class EmployeeBook {
      *
      * @param fullName String
      */
-    public void removeEmployeeByName(String fullName) {
-        Employee foundEmployee = findEmployeeByName(fullName);
+    public void removeEmployee(String fullName) {
+        Employee foundEmployee = findEmployeeByFullName(fullName);
         if (foundEmployee == null) {
             System.out.println("Сотрудник \"" + fullName + "\" не найден!");
         } else {
             int id = foundEmployee.getId();
             employees[id] = null;
-            size--;
             System.out.println("Сотрудник \"" + fullName + "\" удалён!");
         }
     }
@@ -73,7 +58,7 @@ public class EmployeeBook {
      * @param fullName String
      * @return Employee|null - если сотрудник не найден, возвращает null
      */
-    private Employee findEmployeeByName(String fullName) {
+    private Employee findEmployeeByFullName(String fullName) {
         for (Employee employee : employees) {
             if (employee != null && employee.getFullName().equals(fullName)) {
                 return employee;
@@ -83,22 +68,22 @@ public class EmployeeBook {
     }
 
     public void setSalaryByName(String fullName, int newSalary) {
-        Employee foundEmployee = findEmployeeByName(fullName);
+        Employee foundEmployee = findEmployeeByFullName(fullName);
         if (foundEmployee != null) {
             foundEmployee.setSalary(newSalary);
-            System.out.println("Зарплата сотрудника \"" + fullName + "\" изменена. Новая зарплата: " + newSalary + " руб.");
+            System.out.printf("Зарплата сотрудника %s изменена. Новая зарплата: %d руб.%n", fullName, newSalary);
         } else {
-            System.out.println("Сотрудник \"" + fullName + "\" не найден!");
+            System.out.printf("Сотрудник %s не найден!%n", fullName);
         }
     }
 
     public void setDepartmentByName(String fullName, int newDepartment) {
-        Employee foundEmployee = findEmployeeByName(fullName);
+        Employee foundEmployee = findEmployeeByFullName(fullName);
         if (foundEmployee != null) {
             foundEmployee.setDepartment(newDepartment);
-            System.out.println("Отдел сотрудника \"" + fullName + "\" изменён. Новый отдел: " + newDepartment);
+            System.out.printf("Отдел сотрудника %s изменён. Новый отдел: %d%n", fullName, newDepartment);
         } else {
-            System.out.println("Сотрудник \"" + fullName + "\" не найден!");
+            System.out.printf("Сотрудник %s не найден!%n", fullName);
         }
     }
 
@@ -176,10 +161,10 @@ public class EmployeeBook {
      * @param percent int
      */
     public void changeEmployeesSalary(int percent) {
+        double coefficient = 1 + percent / 100D;
         for (Employee employee : employees) {
             if (employee != null) {
-                int salary = employee.getSalary() + employee.getSalary() * percent / 100;
-                employee.setSalary(salary);
+                employee.setSalary((int) (employee.getSalary() * coefficient));
             }
         }
     }
@@ -206,73 +191,67 @@ public class EmployeeBook {
         }
     }
 
-    public String getEmployeeWithMaxSalary(int department) {
+    public Employee getEmployeeWithMaxSalary(int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
-        return (departmentEmployees.length == 0)
-                ? "В отделе нет сотрудников"
-                : getEmployeeNameWithMaxSalary(departmentEmployees);
+        return getEmployeeWithMaxSalary(departmentEmployees);
     }
 
-    public String getEmployeeWithMaxSalary() {
-        return getEmployeeNameWithMaxSalary(employees);
+    public Employee getEmployeeWithMaxSalary() {
+        return getEmployeeWithMaxSalary(employees);
     }
 
     /**
-     * Получает ФИО сотрудника с максимальной зарплатой
+     * Получает сотрудника с максимальной зарплатой
      *
      * @param array Employee
      * @return String
      */
-    private String getEmployeeNameWithMaxSalary(Employee[] array) {
-        int maxSalary = array[0].getSalary();
-        String fullName = null;
-        for (int i = 1; i < array.length; i++) {
-            Employee employee = array[i];
-            if (employee != null && employee.getSalary() > maxSalary) {
-                maxSalary = employee.getSalary();
-                fullName = employee.getFullName();
+    private Employee getEmployeeWithMaxSalary(Employee[] array) {
+        int max = Integer.MIN_VALUE;
+        Employee employee = null;
+        for (Employee emp : array) {
+            if (emp != null && emp.getSalary() > max) {
+                max = emp.getSalary();
+                employee = emp;
             }
         }
-        return fullName;
+        return employee;
     }
 
-    public String getEmployeeWithMinSalary(int department) {
+    public Employee getEmployeeWithMinSalary(int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
-        return (departmentEmployees.length == 0)
-                ? "В отделе нет сотрудников"
-                : getEmployeeNameWithMinSalary(departmentEmployees);
+        return getEmployeeWithMinSalary(departmentEmployees);
     }
 
-    public String getEmployeeWithMinSalary() {
-        return getEmployeeNameWithMinSalary(employees);
+    public Employee getEmployeeWithMinSalary() {
+        return getEmployeeWithMinSalary(employees);
     }
 
     /**
-     * Получает ФИО сотрудника с минимальной зарплатой
+     * Получает объект сотрудника с минимальной зарплатой
      *
      * @param array Employee
-     * @return String
+     * @return Employee
      */
-    private String getEmployeeNameWithMinSalary(Employee[] array) {
-        int minSalary = array[0].getSalary();
-        String fullName = null;
-        for (int i = 1; i < array.length; i++) {
-            Employee employee = array[i];
-            if (employee != null && employee.getSalary() < minSalary) {
-                minSalary = employee.getSalary();
-                fullName = employee.getFullName();
+    private Employee getEmployeeWithMinSalary(Employee[] array) {
+        int min = Integer.MAX_VALUE;
+        Employee employee = null;
+        for (Employee emp : array) {
+            if (emp != null && emp.getSalary() < min) {
+                min = emp.getSalary();
+                employee = emp;
             }
         }
-        return fullName;
+        return employee;
     }
 
-    public float calcAverageMonthlySalary(int department) {
+    public double calcAverageMonthlySalary(int department) {
         Employee[] departmentEmployees = getEmployeesByDepartment(department);
-        return (float) calcTotalMonthlySalary(department) / departmentEmployees.length;
+        return (double) calcTotalMonthlySalary(department) / departmentEmployees.length;
     }
 
-    public float calcAverageMonthlySalary() {
-        return (float) calcTotalMonthlySalary() / getSize();
+    public double calcAverageMonthlySalary() {
+        return (double) calcTotalMonthlySalary() / getSize();
     }
 
     /**
@@ -322,8 +301,8 @@ public class EmployeeBook {
      *
      * @return int
      */
-    private int getSize() {
-        return size;
+    public int getSize() {
+        return SIZE;
     }
 
     /**

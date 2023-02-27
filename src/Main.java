@@ -1,4 +1,12 @@
+import java.util.Random;
+
 public class Main {
+
+    private static final Random RANDOM = new Random();
+    private static final String[] NAMES = {"Иван", "Максим", "Виктор", "Андрей", "Дмитрий", "Егор", "Игорь", "Вячеслав"};
+    private static final String[] SURNAMES = {"Иванов", "Максимов", "Викторов", "Андреев", "Дмитриев", "Егоров", "Абдурахманов", "Славин"};
+    private static final String[] MIDDLE_NAMES = {"Иванович", "Максимович", "Викторович", "Андреевич", "Дмитриевич", "Егорович", "Абдурахманович", "Вячеславович"};
+
     public static void main(String[] args) {
 
         // ** Задания уровня "Очень сложно"
@@ -7,34 +15,26 @@ public class Main {
         EmployeeBook employeeBook = new EmployeeBook();
 
         // ** Добавить сотрудника
-        employeeBook.addEmployee("Алексей", "Иванович", "Кузькин", 40000, 1);
-        employeeBook.addEmployee("Алексей", "Иванович", "Пронькин", 30000, 3);
-        employeeBook.addEmployee("Кузьма", "Андреевич", "Медведев", 30000, 1);
-        employeeBook.addEmployee("София", "Агаповна", "Собакевич", 60000, 3);
-        employeeBook.addEmployee("Елена", "Вячеславовна", "Дмитриева", 20000, 5);
-        employeeBook.addEmployee("Александр", "Дмитриевич", "Ходоренко", 10000, 5);
-        employeeBook.addEmployee("Дмитрий", "Федорович", "Звонов", 30000, 2);
-        employeeBook.addEmployee("Елисей", "Дмитриевич", "Волков", 70000, 5);
-        employeeBook.addEmployee("Роман", "Карлович", "Мудрый", 30000, 3);
-        employeeBook.addEmployee("Галина", "Евгеньевна", "Тузова", 110000, 5);
-        employeeBook.addEmployee("Лишний", "", "Сотрудник", 1_000_000, 10);
+        fillEmployees(employeeBook);
 
         // ** Удалить сотрудника по ID
-        employeeBook.removeEmployeeById(2);
-        employeeBook.removeEmployeeById(9);
+        employeeBook.removeEmployee(2);
+        employeeBook.removeEmployee(9);
 
         // ** Удалить сотрудника по ФИО
-        employeeBook.removeEmployeeByName("Пронькиндт Алексей Иванович");
-        employeeBook.removeEmployeeByName("Звонов Дмитрий Федорович");
+        employeeBook.removeEmployee("Пронькиндт Алексей Иванович");
+        employeeBook.removeEmployee("Звонов Дмитрий Федорович");
 
         // ** Обратно добавить удаленного сотрудника
-        employeeBook.addEmployee("Дмитрий", "Федорович", "Звонов", 30000, 2);
+        employeeBook.addEmployee(generate());
+        employeeBook.addEmployee(new Employee("Звонов Дмитрий Федорович", 40_000, 4));
 
         // ** Изменить зарплату сотрудника по ФИО
-        employeeBook.setSalaryByName("Звонов Дмитрий Федорович", 60000);
+        employeeBook.setSalaryByName("Звонов Дмитрий Федорович", 60_000);
+        employeeBook.setSalaryByName(employeeBook.getEmployeeWithMinSalary().getFullName(), 90_000);
 
         // ** Изменить отдел, где работает сотрудник по его ФИО
-        employeeBook.setDepartmentByName("Дмитриева Елена Вячеславовна", 1);
+        employeeBook.setDepartmentByName("Звонов Дмитрий Федорович", 1);
 
         // ** Получить Ф. И. О. всех сотрудников по отделам (напечатать список отделов и их сотрудников).
         employeeBook.printAllEmployeesDataGroupedByDepartment();
@@ -50,15 +50,15 @@ public class Main {
         System.out.println("Сумма затрат на зарплаты в месяц: " + totalMonthlySalary + " руб.");
 
         // Найти сотрудника с минимальной зарплатой
-        String employeeWithMinimumSalary = employeeBook.getEmployeeWithMinSalary();
-        System.out.println("Сотрудник с минимальной зарплатой: " + employeeWithMinimumSalary);
+        Employee employeeWithMinimumSalary = employeeBook.getEmployeeWithMinSalary();
+        System.out.println("Сотрудник с мин. ЗП: " + employeeWithMinimumSalary);
 
         // Найти сотрудника с максимальной зарплатой
-        String employeeWithMaximumSalary = employeeBook.getEmployeeWithMaxSalary();
-        System.out.println("Сотрудник с максимальной зарплатой: " + employeeWithMaximumSalary);
+        Employee employeeWithMaximumSalary = employeeBook.getEmployeeWithMaxSalary();
+        System.out.println("Сотрудник с макс. ЗП: " + employeeWithMaximumSalary);
 
         // Подсчитать среднее значение зарплат
-        float averageMonthlySalary = employeeBook.calcAverageMonthlySalary();
+        double averageMonthlySalary = employeeBook.calcAverageMonthlySalary();
         System.out.println("Среднее значение зарплат в месяц: " + averageMonthlySalary + " руб.");
 
         // Получить Ф. И. О. всех сотрудников (вывести в консоль)
@@ -70,9 +70,9 @@ public class Main {
         // * 1. Проиндексировать зарплату (вызвать изменение зарплат у всех сотрудников на величину аргумента в %)
         System.out.println("================= Task 1 ======================");
 
-        int percent = 10;
-
-        employeeBook.changeEmployeesSalary(percent);
+        int indexPercent = 10;
+        employeeBook.changeEmployeesSalary(indexPercent);
+        System.out.printf("ЗП после индексации на %d%%%n", indexPercent);
         employeeBook.printAllEmployeesData();
 
         // * 2. Получить в качестве параметра номер отдела (1–5) и найти (всего 6 методов):
@@ -82,26 +82,26 @@ public class Main {
 
         //    1. Сотрудника с минимальной зарплатой.
         String employeeWithMinimumSalaryInDepartment = employeeBook.getEmployeeWithMinSalary(department) == null
-                ? "Зарплаты сотрудников в департаменте " + department + " равны"
-                : "Сотрудник с минимальной зарплатой в департаменте " + department + ": " + employeeBook.getEmployeeWithMinSalary(department);
-        System.out.println(employeeWithMinimumSalaryInDepartment);
+                ? "Зарплаты сотрудников в отделе %d равны %n"
+                : "Сотрудник с мин. ЗП в отделе %d: " + employeeBook.getEmployeeWithMinSalary(department) + "%n";
+        System.out.printf(employeeWithMinimumSalaryInDepartment, department);
 
         //    2. Сотрудника с максимальной зарплатой.
         String employeeWithMaximumSalaryInDepartment = employeeBook.getEmployeeWithMaxSalary(department) == null
-                ? "Зарплаты сотрудников в департаменте " + department + " равны"
-                : "Сотрудник с максимальной зарплатой в департаменте " + department + ": " + employeeBook.getEmployeeWithMaxSalary(department);
-        System.out.println(employeeWithMaximumSalaryInDepartment);
+                ? "Зарплаты сотрудников в отделе %d равны %n"
+                : "Сотрудник с макс. ЗП в отделе %d: " + employeeBook.getEmployeeWithMaxSalary(department) + "%n";
+        System.out.printf(employeeWithMaximumSalaryInDepartment, department);
 
         //    3. Сумму затрат на зарплату по отделу.
         int totalMonthlySalaryInDepartment = employeeBook.calcTotalMonthlySalary(department);
-        System.out.println("Сумма затрат на зарплаты департамента " + department + " в месяц: " + totalMonthlySalaryInDepartment + " руб.");
+        System.out.printf("Сумма затрат на зарплаты отдела %d в месяц: %d руб.%n", department, totalMonthlySalaryInDepartment);
 
         //    4. Среднюю зарплату по отделу (учесть, что количество людей в отделе отличается от employees.length).
-        float averageMonthlySalaryInDepartment = employeeBook.calcAverageMonthlySalary(department);
-        System.out.println("Среднее значение зарплат департамента " + department + " в месяц: " + averageMonthlySalaryInDepartment + " руб.");
+        double averageMonthlySalaryInDepartment = employeeBook.calcAverageMonthlySalary(department);
+        System.out.println("Среднее значение зарплат отдела " + department + " в месяц: " + averageMonthlySalaryInDepartment + " руб.");
 
         //    5. Проиндексировать зарплату всех сотрудников отдела на процент, который приходит в качестве параметра.
-        employeeBook.changeEmployeesSalary(percent, department);
+        employeeBook.changeEmployeesSalary(indexPercent, department);
         employeeBook.printAllEmployeesData();
 
         //    6. Напечатать всех сотрудников отдела (все данные, кроме отдела).
@@ -112,12 +112,29 @@ public class Main {
         //    2. Всех сотрудников с зарплатой больше (или равно) числа (вывести id, Ф. И. О. и зарплатой в консоль).
         System.out.println("================= Task 3 ======================");
 
-        int benchmark = 33000;
+        int benchmark = 75_000;
 
         System.out.println("Сотрудники с зарплатой меньше чем " + benchmark + " рублей:");
         employeeBook.printEmployeesWithSalaryLowerThanBenchmark(benchmark);
 
         System.out.println("Сотрудники с зарплатой больше или равной " + benchmark + " рублей:");
         employeeBook.printEmployeesWithSalaryHigherThanBenchmark(benchmark);
+    }
+
+    private static void fillEmployees(EmployeeBook employeeBook) {
+        for (int i = 0; i < 10; i++) {
+            employeeBook.addEmployee(generate());
+        }
+    }
+
+    private static Employee generate() {
+        String fullName = SURNAMES[RANDOM.nextInt(SURNAMES.length)]
+                + ' ' + NAMES[RANDOM.nextInt(NAMES.length)]
+                + ' ' + MIDDLE_NAMES[RANDOM.nextInt(MIDDLE_NAMES.length)];
+        return new Employee(
+                fullName,
+                RANDOM.nextInt(45_000, 90_000),
+                RANDOM.nextInt(1, 6)
+        );
     }
 }
