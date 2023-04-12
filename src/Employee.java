@@ -2,33 +2,25 @@ import java.util.Objects;
 
 public class Employee {
 
-    private final String firstName; // имя
-    private final String middleName; // отчество
-    private final String lastName; // фамилия
+    private final String fullName;
     private int salary; // зарплата
     private int department; // отдел
-    private static int counter = 0; // счётчик
-    private final int id = counter; // поле id, которое проставляется из счетчика
+    private static int counter = 1; // счётчик
+    private final int id; // поле id, которое проставляется из счетчика
 
-    public Employee(String firstName, String middleName, String lastName, int salary, int department) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
+    public Employee(
+            String fullName,
+            int salary,
+            int department
+    ) {
+        this.fullName = fullName;
         this.salary = salary;
         this.department = department;
-        counter++;
+        this.id = counter++;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
+    public String getFullName() {
+        return fullName;
     }
 
     public int getSalary() {
@@ -48,7 +40,7 @@ public class Employee {
     }
 
     public void setSalary(int salary) {
-        this.salary = (salary >= 0) ? salary : 0;
+        this.salary = Math.max(salary, 0);
     }
 
     public void setDepartment(int department) {
@@ -57,18 +49,13 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Сотрудник {" +
-                "id=" + id +
-                ", имя='" + firstName + '\'' +
-                ", отчество='" + middleName + '\'' +
-                ", фамилия='" + lastName + '\'' +
-                ", зарплата=" + salary +
-                ", отдел=" + department +
-                '}';
-    }
-
-    public String getFullName() {
-        return getLastName() + " " + getFirstName() + " " + getMiddleName();
+        return String.format(
+                "ID: %d, ФИО: %s, ЗП: %d, отдел: %d",
+                id,
+                getFullName(),
+                salary,
+                department
+        );
     }
 
     public String getEmployeeData() {
@@ -80,11 +67,11 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return firstName.equals(employee.firstName) && middleName.equals(employee.middleName) && lastName.equals(employee.lastName);
+        return fullName.equals(employee.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, middleName, lastName);
+        return Objects.hash(fullName);
     }
 }
